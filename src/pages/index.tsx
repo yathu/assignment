@@ -1,7 +1,5 @@
-import { File } from "buffer";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
-import { Blob } from "buffer";
 
 export default function Home() {
   const [isSizeIssue, setIsSizeIssue] = useState<boolean>(false);
@@ -97,7 +95,6 @@ const UploadShowImage = ({ onchange }: UploadImageProp) => {
             accept="image/png"
             name="myImage"
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              // console.log(event?.target?.files[0]);
 
               if (event.target.files) {
                 setSelectedImage(event?.target?.files[0]);
