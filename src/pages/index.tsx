@@ -1,13 +1,15 @@
 import { File } from "buffer";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
-import { Blob } from 'buffer';
+import { Blob } from "buffer";
 
 export default function Home() {
   const [isSizeIssue, setIsSizeIssue] = useState<boolean>(false);
+  const [baseImag, setBastImg] = useState<string>("");
 
-  const handleChange = (data: boolean) => {
+  const handleChange = (data: boolean, img: string) => {
     setIsSizeIssue(data);
+    setBastImg(img);
   };
 
   return (
@@ -26,35 +28,56 @@ export default function Home() {
           </p>
         </div>
       )}
+
+      <div className={`w-full max-w-full overflow-hidden px-4`}>
+        <p className={`break-all text-ellipsis truncate`}>{baseImag}</p>
+      </div>
     </div>
   );
 }
 
 interface UploadImageProp {
-  onchange: (data: boolean) => void;
+  onchange: (data: boolean, img: string) => void;
 }
 
 const UploadShowImage = ({ onchange }: UploadImageProp) => {
-  const [selectedImage, setSelectedImage] = useState<any> (null);
+  const [selectedImage, setSelectedImage] = useState<any>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const checkSize = (file: any) => {
+  const checkSize = async (file: any) => {
     if (file) {
       let img: HTMLImageElement;
       img = document.createElement("img");
 
-      img.onload = function (event) {
+      img.onload = async function (event) {
         console.log({ width: img.width, height: img.height });
         const { width, height } = img;
 
         const isSize = width == 512 && height == 512;
-        onchange(!isSize);
+
+        convertBase64(file).then((data) => {
+          onchange(!isSize, data.toString());
+        });
       };
 
       img.src = URL.createObjectURL(file);
     } else {
       console.log("no file");
     }
+  };
+
+  const convertBase64 = (file: any): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        const out = fileReader?.result ? fileReader?.result.toString() : "";
+        resolve(out);
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
   };
 
   return (
