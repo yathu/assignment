@@ -29,9 +29,15 @@ export default function Home() {
         </div>
       )}
 
-      <div className={`w-full max-w-full overflow-hidden px-4`}>
-        <p className={`break-all text-ellipsis truncate`}>{baseImag}</p>
-      </div>
+      {baseImag && (
+        <div className={`w-full max-w-full overflow-hidden px-4 mt-4`}>
+          <h6 className={`text-lg`}>Base 64 Object</h6>
+
+          <div className={`w-full p-4 rounded-md border-gray-400 border`}>
+            <p className={`break-all line-clamp-3 text-red-600`}>{baseImag}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
