@@ -1,5 +1,7 @@
+import { File } from "buffer";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
+import { Blob } from 'buffer';
 
 export default function Home() {
   const [isSizeIssue, setIsSizeIssue] = useState<boolean>(false);
@@ -33,10 +35,10 @@ interface UploadImageProp {
 }
 
 const UploadShowImage = ({ onchange }: UploadImageProp) => {
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState<File | null> (null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const checkSize = (file: any) => {
+  const checkSize = (file: File) => {
     if (file) {
       let img: HTMLImageElement;
       img = document.createElement("img");
@@ -67,8 +69,11 @@ const UploadShowImage = ({ onchange }: UploadImageProp) => {
             name="myImage"
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               // console.log(event?.target?.files[0]);
-              setSelectedImage(event?.target?.files[0]);
-              checkSize(event?.target?.files[0]);
+
+              if (event.target.files) {
+                setSelectedImage(event?.target?.files[0]);
+                checkSize(event?.target?.files[0]);
+              }
             }}
           />
         </>
