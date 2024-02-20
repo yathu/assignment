@@ -35,10 +35,10 @@ interface UploadImageProp {
 }
 
 const UploadShowImage = ({ onchange }: UploadImageProp) => {
-  const [selectedImage, setSelectedImage] = useState<File | null> (null);
+  const [selectedImage, setSelectedImage] = useState<any> (null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const checkSize = (file: File) => {
+  const checkSize = (file: any) => {
     if (file) {
       let img: HTMLImageElement;
       img = document.createElement("img");
